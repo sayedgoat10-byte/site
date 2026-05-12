@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>كتكوتي 🌹</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&family=Amiri:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy:      #04050f;
+      --card:      rgba(255,255,255,0.06);
+      --border:    rgba(255,255,255,0.12);
+      --rose:      #e8607a;
+      --rose-soft: #f4a0b0;
+      --gold:      #c9a96e;
+      --text:      #f0e6ef;
+      --muted:     rgba(240,230,239,0.55);
+      --font-main: 'Cairo', sans-serif;
+      --font-serif:'Amiri', serif;
+    }
+
+    html, body {
+      height: 100%;
+      background: var(--navy);
+      color: var(--text);
+      font-family: var(--font-main);
+      -webkit-tap-highlight-color: transparent;
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+    }
+
+    /* ── CINEMATIC VIGNETTE ── */
+    body::after {
+      content: '';
+      position: fixed; inset: 0; z-index: 1;
+      pointer-events: none;
+      background: radial-gradient(ellipse at 50% 50%, transparent 50%, rgba(0,0,0,0.45) 100%);
+    }
+
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+      background-size: 200px 200px;
+      pointer-events: none;
+      opacity: 0.6;
+    }
+
+    /* ── CUSTOM SCROLLBAR ── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: rgba(232,96,122,0.25); border-radius: 10px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(232,96,122,0.45); }
+
+    /* ── PETALS ── */
+    .petals {
+      position: fixed; inset: 0; z-index: 2;
+      pointer-events: none;
+      overflow: hidden;
+      opacity: 0;
+      transition: opacity 2s ease;
+    }
+    .petals.visible { opacity: 1; }
+    .petal {
+      position: absolute;
+      top: -60px;
+      animation: fall-sway linear infinite; opacity: 0.85;
+      will-change: transform;
+      user-select: none;
+    }
+    @keyframes fall-sway {
+      0%   { transform: translateY(0) translateX(0) rotate(0deg) scale(1); opacity: 0; }
+      8%   { opacity: 1; }
+      25%  { transform: translateY(25vh) translateX(15px) rotate(90deg) scale(1); }
+      50%  { transform: translateY(50vh) translateX(-10px) rotate(180deg) scale(0.95); opacity: 0.85; }
+      75%  { transform: translateY(75vh) translateX(12px) rotate(270deg) scale(0.8); }
+      90%  { opacity: 0.6; }
+      100% { transform: translateY(110vh) translateX(-5px) rotate(360deg) scale(0.6); opacity: 0; }
+    }
+
+    /* ── SCREENS ── */
+    .screen {
+      position: fixed; inset: 0; z-index: 10;
+      display: flex; align-items: center; justify-content: center;
+      transition: opacity 0.9s ease, visibility 0.9s ease;
+    }
+    .screen.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+
+    /* ── LOGIN ── */
+    #login-screen {
+      background: radial-gradient(ellipse at 50% 30%, #120a1a 0%, var(--navy) 70%);
+    }
+    .login-card {
+      width: min(88vw, 380px);
+      padding: clamp(32px,8vw,52px) clamp(24px,6vw,44px);
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      backdrop-filter: blur(24px) saturate(1.3);
+      -webkit-backdrop-filter: blur(24px) saturate(1.3);
+      box-shadow: 0 0 0 1px rgba(255,255,255,0.04) inset,
+                  0 40px 80px rgba(0,0,0,0.6),
+                  0 0 60px rgba(232,96,122,0.08);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    /* Glass top highlight */
+    .login-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 15%; right: 15%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.35), transparent);
+    }
+    /* Subtle grain overlay on card */
+    .login-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+      border-radius: 24px;
+    }
+    .login-icon {
+      font-size: 38px;
+      margin-bottom: 18px;
+      display: block;
+      filter: drop-shadow(0 0 12px rgba(232,96,122,0.5));
+      animation: pulse-icon 4.5s ease-in-out infinite;
+    }
+    @keyframes pulse-icon {
+      0%,100% { filter: drop-shadow(0 0 10px rgba(232,96,122,0.4)); transform: scale(1); }
+      50%     { filter: drop-shadow(0 0 22px rgba(232,96,122,0.75)); transform: scale(1.07); }
+    }
+    .input-wrap { position: relative; margin-bottom: 20px; z-index: 1; }
+    .input-label {
+      display: block;
+      font-size: clamp(12px,3.5vw,14px);
+      color: var(--gold);
+      margin-bottom: 10px;
+      letter-spacing: 0.06em;
+      font-weight: 600;
+    }
+    .password-input {
+      width: 100%;
+      min-height: 52px;
+      padding: 14px 18px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      color: var(--text);
+      font-family: var(--font-main);
+      font-size: clamp(16px,4vw,18px);
+      text-align: center;
+      letter-spacing: 0.15em;
+      outline: none;
+      transition: border-color 0.3s, box-shadow 0.3s;
+      -webkit-appearance: none;
+      position: relative;
+      z-index: 1;
+    }
+    .password-input::placeholder { color: rgba(240,230,239,0.25); letter-spacing: 0.05em; }
+    .password-input:focus {
+      border-color: rgba(232,96,122,0.6);
+      box-shadow: 0 0 0 3px rgba(232,96,122,0.12), 0 0 20px rgba(232,96,122,0.08);
+    }
+    .password-input.success {
+      border-color: var(--rose);
+      box-shadow: 0 0 0 3px rgba(232,96,122,0.15);
+      animation: pulse-glow 1.5s ease-in-out infinite;
+    }
+    @keyframes pulse-glow {
+      0%,100% { box-shadow: 0 0 0 3px rgba(232,96,122,0.15), 0 0 10px rgba(232,96,122,0.1); }
+      50%     { box-shadow: 0 0 20px rgba(232,96,122,0.35), 0 0 40px rgba(232,96,122,0.15); }
+    }
+    .login-btn {
+      width: 100%;
+      min-height: 52px;
+      padding: 14px 24px;
+      background: linear-gradient(135deg, #c8556d 0%, #e8607a 50%, #d4768a 100%);
+      border: none;
+      border-radius: 14px;
+      color: #fff;
+      font-family: var(--font-main);
+      font-size: clamp(15px,4vw,17px);
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.3s, opacity 0.2s;
+      box-shadow: 0 8px 30px rgba(232,96,122,0.35);
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+    }
+    .login-btn::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+      transform: translateX(-100%);
+      transition: transform 0.5s ease;
+    }
+    .login-btn:hover::after {
+      transform: translateX(100%);
+    }
+    .login-btn:active { transform: scale(0.97); opacity: 0.9; }
+    .login-btn:hover  { box-shadow: 0 8px 40px rgba(232,96,122,0.5); }
+    .login-btn:disabled {
+      opacity: 0.7;
+      cursor: wait;
+      transform: none;
+    }
+    .error-msg {
+      font-size: clamp(12px,3.2vw,13px);
+      color: #f07088;
+      margin-top: 12px;
+      min-height: 20px;
+      opacity: 0;
+      transition: opacity 0.3s;
+      position: relative;
+      z-index: 1;
+    }
+    .error-msg.visible { opacity: 1; }
+    @keyframes shake {
+      0%,100% { transform: translateX(0); }
+      20%     { transform: translateX(-10px); }
+      40%     { transform: translateX(10px); }
+      60%     { transform: translateX(-7px); }
+      80%     { transform: translateX(7px); }
+    }
+    .shake { animation: shake 0.45s ease; }
+
+    /* ── MAIN SCREEN ── */
+    #main-screen {
+      background: transparent;
+      flex-direction: column;
+      padding: 24px clamp(16px,5vw,32px);
+      z-index: 5;
+      opacity: 0;
+      transform: scale(0.96) translateY(10px);
+      transition: opacity 1.2s ease, transform 1.2s cubic-bezier(0.22, 1, 0.36, 1), visibility 0.9s;
+    }
+    #main-screen:not(.hidden) {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+    .main-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      max-width: 480px;
+      gap: clamp(24px,6vw,36px);
+      text-align: center;
+    }
+
+    /* ── JS TYPEWRITER ── */
+    .typing-block {
+      font-family: var(--font-serif);
+      font-size: clamp(18px,5.2vw,25px);
+      color: var(--rose-soft);
+      line-height: 2.6;
+      min-height: 120px;
+      direction: rtl;
+      unicode-bidi: isolate;
+      width: 100%;
+      letter-spacing: 0.01em;
+      text-shadow: 0 0 40px rgba(244,160,176,0.15);
+    }
+    .typing-line {
+      display: block;
+      min-height: 1.6em;
+    }
+    .typing-cursor::after {
+      content: '|';
+      color: var(--rose);
+      animation: blink 0.75s step-end infinite;
+      margin-right: 2px;
+    }
+    @keyframes blink {
+      0%,100% { opacity: 1; }
+      50%     { opacity: 0; }
+    }
+
+    /* ── TAGLINE ── */
+    .tagline {
+      font-family: var(--font-serif);
+      font-size: clamp(22px,7vw,32px);
+      font-weight: 400;
+      color: var(--gold);
+      text-shadow: 0 0 30px rgba(201,169,110,0.4);
+      opacity: 0;
+      transform: translateY(12px);
+      transition: opacity 1s ease, transform 1s ease;
+      letter-spacing: 0.04em;
+      background: linear-gradient(135deg, var(--gold) 0%, #e8d5a3 50%, var(--gold) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      filter: drop-shadow(0 0 20px rgba(201,169,110,0.3));
+    }
+    .tagline.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── GLOW BUTTON ── */
+    .glow-btn {
+      min-height: 54px;
+      padding: 15px 36px;
+      background: transparent;
+      border: 1.5px solid var(--rose);
+      border-radius: 50px;
+      color: var(--rose-soft);
+      font-family: var(--font-main);
+      font-size: clamp(15px,4vw,17px);
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 0 18px rgba(232,96,122,0.2), inset 0 0 12px rgba(232,96,122,0.06);
+      opacity: 0;
+      transform: translateY(10px);
+      transition: opacity 0.8s ease, transform 0.8s ease, color 0.3s, box-shadow 0.4s;
+    }
+    .glow-btn.visible {
+      opacity: 1;
+      transform: translateY(0);
+      animation: heartbeat-btn 3.5s ease-in-out infinite;
+    }
+    .glow-btn::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(circle at 50% 50%, rgba(232,96,122,0.2), transparent 70%);
+      opacity: 0;
+      transition: opacity 0.4s;
+    }
+    .glow-btn:hover::before, .glow-btn:active::before { opacity: 1; }
+    .glow-btn:hover  { box-shadow: 0 0 30px rgba(232,96,122,0.45); color: #fff; }
+    .glow-btn:active { transform: scale(0.96); }
+    /* Shimmer sweep on hover */
+    .glow-btn::after {
+      content: '';
+      position: absolute;
+      top: 0; left: -100%;
+      width: 50%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+      transform: skewX(-20deg);
+      transition: left 0.7s ease;
+    }
+    .glow-btn:hover::after {
+      left: 150%;
+    }
+    @keyframes heartbeat-btn {
+      0%,100% { box-shadow: 0 0 18px rgba(232,96,122,0.2); }
+      50%     { box-shadow: 0 0 32px rgba(232,96,122,0.5); }
+    }
+
+    /* ── MESSAGE BOX ── */
+    .message-box {
+      width: min(92vw, 440px);
+      padding: clamp(24px,6vw,36px) clamp(20px,5vw,32px);
+      background: linear-gradient(160deg, rgba(232,96,122,0.1) 0%, rgba(201,169,110,0.06) 100%);
+      border: 1px solid rgba(232,96,122,0.25);
+      border-radius: 20px;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      box-shadow: 0 0 0 1px rgba(255,255,255,0.04) inset,
+                  0 30px 60px rgba(0,0,0,0.5),
+                  0 0 50px rgba(232,96,122,0.1);
+      opacity: 0;
+      transform: translateY(20px) scale(0.97);
+      display: none;
+      position: relative;
+      overflow: hidden;
+    }
+    /* Radial flash behind message */
+    .message-box::before {
+      content: '';
+      position: absolute;
+      inset: -40px;
+      background: radial-gradient(circle, rgba(232,96,122,0.15), transparent 70%);
+      opacity: 0;
+      z-index: -1;
+      pointer-events: none;
+      transition: opacity 0.8s ease;
+    }
+    .message-box.anim::before {
+      opacity: 1;
+    }
+    /* Grain texture on message box */
+    .message-box::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+      pointer-events: none;
+      border-radius: 20px;
+    }
+    .message-box.anim {
+      animation: box-appear 1s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+    @keyframes box-appear {
+      from { opacity: 0; transform: translateY(20px) scale(0.97); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .message-text {
+      font-family: var(--font-serif);
+      font-size: clamp(16px,4.5vw,20px);
+      line-height: 2.4;
+      color: var(--text);
+      direction: rtl;
+      text-align: center;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+      position: relative;
+      z-index: 1;
+    }
+    .message-box.anim .message-text {
+      opacity: 1;
+      transform: translateY(0);
+      transition-delay: 0.4s;
+    }
+    .message-text .highlight {
+      color: var(--rose-soft);
+      font-weight: 700;
+      text-shadow: 0 0 20px rgba(244,160,176,0.25);
+    }
+    .heart-footer {
+      margin-top: 18px;
+      font-size: clamp(22px,6vw,28px);
+      display: block;
+      opacity: 0;
+      transform: scale(0.8);
+      transition: opacity 0.5s ease 0.9s, transform 0.5s cubic-bezier(0.34,1.56,0.64,1) 0.9s;
+      position: relative;
+      z-index: 1;
+      animation: heartbeat 2.4s ease-in-out infinite;
+    }
+    .message-box.anim .heart-footer {
+      opacity: 1;
+      transform: scale(1);
+    }
+    @keyframes heartbeat {
+      0%,100% { transform: scale(1); filter: drop-shadow(0 0 8px rgba(232,96,122,0.4)); }
+      25%     { transform: scale(1.12); filter: drop-shadow(0 0 18px rgba(232,96,122,0.6)); }
+      50%     { transform: scale(1); filter: drop-shadow(0 0 8px rgba(232,96,122,0.4)); }
+      75%     { transform: scale(1.08); filter: drop-shadow(0 0 14px rgba(232,96,122,0.5)); }
+    }
+
+    /* ── MUSIC TOGGLE ── */
+    #music-toggle {
+      position: fixed;
+      bottom: 24px;
+      left: 24px;
+      z-index: 100;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: var(--card);
+      border: 1px solid var(--border);
+      color: var(--rose-soft);
+      font-size: 18px;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      cursor: pointer;
+      opacity: 0;
+      transform: translateY(10px);
+      transition: all 0.5s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    }
+    #music-toggle.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    #music-toggle.playing {
+      animation: spin-slow 8s linear infinite;
+      color: var(--rose);
+      border-color: rgba(232,96,122,0.4);
+      box-shadow: 0 0 20px rgba(232,96,122,0.2);
+    }
+    @keyframes spin-slow { to { transform: rotate(360deg); } }
+
+    /* ── CURSOR GLOW (desktop only) ── */
+    .cursor-glow {
+      position: fixed;
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(232,96,122,0.07), transparent 70%);
+      pointer-events: none;
+      z-index: 3;
+      transform: translate(-50%, -50%);
+      transition: opacity 0.3s;
+      mix-blend-mode: screen;
+    }
+
+    /* ── AMBIENT BLOBS ── */
+    .blob {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(80px);
+      pointer-events: none;
+      z-index: 2;
+    }
+    .blob-1 {
+      width: clamp(200px,60vw,400px);
+      height: clamp(200px,60vw,400px);
+      background: radial-gradient(circle, rgba(232,96,122,0.12), transparent 70%);
+      top: -10%; left: -10%;
+      animation: drift1 18s ease-in-out infinite alternate;
+    }
+    .blob-2 {
+      width: clamp(150px,50vw,320px);
+      height: clamp(150px,50vw,320px);
+      background: radial-gradient(circle, rgba(201,169,110,0.1), transparent 70%);
+      bottom: 5%; right: -5%;
+      animation: drift2 22s ease-in-out infinite alternate;
+    }
+    @keyframes drift1 { from { transform: translate(0,0); } to { transform: translate(6vw,8vh); } }
+    @keyframes drift2 { from { transform: translate(0,0); } to { transform: translate(-5vw,-7vh); } }
+
+    /* ── REDUCED MOTION ── */
+    @media (prefers-reduced-motion: reduce) {
+      .petal, .blob, .login-icon, .glow-btn, .heart-footer, #music-toggle.playing {
+        animation: none !important;
+        transition: none !important;
+      }
+      .petals { opacity: 0.3; }
+      .cursor-glow { display: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Background music -->
+  <audio id="bg-music" loop src="music.mp3"></audio>
+
+  <!-- Cursor glow -->
+  <div class="cursor-glow" id="cursor-glow"></div>
+
+  <!-- Music toggle -->
+  <button id="music-toggle" aria-label="تشغيل الموسيقى">🎵</button>
+
+  <!-- Ambient blobs -->
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+
+  <!-- Falling petals -->
+  <div class="petals" id="petals"></div>
+
+  <!-- ── LOGIN SCREEN ── -->
+  <div class="screen" id="login-screen">
+    <div class="login-card">
+      <span class="login-icon">🌹</span>
+      <div class="input-wrap">
+        <label class="input-label" for="pwd">أدخلي كلمة السر</label>
+        <input
+          class="password-input"
+          id="pwd"
+          type="password"
+          autocomplete="off"
+          spellcheck="false"
+          placeholder="••••••"
+          inputmode="text"
+        />
+      </div>
+      <button class="login-btn" id="login-btn">دخول</button>
+      <p class="error-msg" id="error-msg">مش دي يا كتكوتي... فكري تاني 💭🌹</p>
+    </div>
+  </div>
+
+  <!-- ── MAIN SCREEN ── -->
+  <div class="screen hidden" id="main-screen">
+    <div class="main-inner">
+
+      <div class="typing-block">
+        <span class="typing-line" id="line1"></span>
+        <span class="typing-line" id="line2"></span>
+      </div>
+
+      <p class="tagline" id="tagline">البداية يا عائشة</p>
+
+      <button class="glow-btn" id="glow-btn">اضغطي هنا</button>
+
+      <div class="message-box" id="msg-box">
+        <p class="message-text">
+          عدى كام يوم، ولسه اللحظة دي معلقة في دماغي..<br>
+          حبيت أوثق <span class="highlight">التاريخين دول</span> بطريقتي<br>
+          في مساحة مقفولة علينا.<br><br>
+          <span class="highlight">بحبك يا كتكوتي</span> 🌹
+        </p>
+        <span class="heart-footer">❤️</span>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    /* ════════════════════════════════
+       PETALS
+    ════════════════════════════════ */
+    const petalsEl    = document.getElementById('petals');
+    const PETAL_SET   = ['🌸','🌹','🌷','🪷','❤️'];
+
+    function spawnPetals(n) {
+      for (let i = 0; i < n; i++) {
+        const p   = document.createElement('span');
+        p.className  = 'petal';
+        p.textContent = PETAL_SET[Math.floor(Math.random() * PETAL_SET.length)];
+        const size = 0.7 + Math.random() * 0.7;
+        p.style.cssText = [
+          'left:'              + (Math.random() * 100) + '%',
+          'animation-duration:'+ (8 + Math.random() * 10) + 's',
+          'animation-delay:'   + (Math.random() * 14) + 's',
+          'font-size:'         + (18 * size) + 'px'
+        ].join(';');
+        petalsEl.appendChild(p);
+      }
+    }
+    spawnPetals(18);
+
+    /* ════════════════════════════════
+       CURSOR GLOW (desktop only)
+    ════════════════════════════════ */
+    const cursorGlow = document.getElementById('cursor-glow');
+    if (!('ontouchstart' in window)) {
+      document.addEventListener('mousemove', e => {
+        cursorGlow.style.left = e.clientX + 'px';
+        cursorGlow.style.top  = e.clientY + 'px';
+      });
+    } else {
+      cursorGlow.style.display = 'none';
+    }
+
+    /* ════════════════════════════════
+       LOGIN
+    ════════════════════════════════ */
+    const loginScreen = document.getElementById('login-screen');
+    const mainScreen  = document.getElementById('main-screen');
+    const pwdInput    = document.getElementById('pwd');
+    const loginBtn    = document.getElementById('login-btn');
+    const errorMsg    = document.getElementById('error-msg');
+    const bgMusic     = document.getElementById('bg-music');
+    const musicToggle = document.getElementById('music-toggle');
+
+    function tryLogin() {
+      const val = pwdInput.value.trim().toLowerCase();
+      if (val === 'sayedaisha_1') {
+        loginBtn.disabled = true;
+        pwdInput.classList.add('success');
+        setTimeout(() => {
+          loginScreen.classList.add('hidden');
+          setTimeout(enterMain, 950);
+        }, 400);
+      } else {
+        pwdInput.value = '';
+        pwdInput.classList.remove('success');
+        errorMsg.classList.add('visible');
+        pwdInput.classList.remove('shake');
+        void pwdInput.offsetWidth;
+        pwdInput.classList.add('shake');
+        setTimeout(() => errorMsg.classList.remove('visible'), 2400);
+      }
+    }
+
+    loginBtn.addEventListener('click', tryLogin);
+    pwdInput.addEventListener('keydown', e => { if (e.key === 'Enter') tryLogin(); });
+    pwdInput.addEventListener('input',   () => {
+      errorMsg.classList.remove('visible');
+      pwdInput.classList.remove('success');
+    });
+
+    /* ════════════════════════════════
+       ENTER MAIN + AUDIO (Smooth Fade-In)
+    ════════════════════════════════ */
+    const TARGET_VOLUME = 0.28;
+    const FADE_DURATION = 6000; // 6 seconds gentle rise
+
+    function fadeInAudio() {
+      bgMusic.volume = 0;
+      bgMusic.play().then(() => {
+        musicToggle.classList.add('playing');
+        const startTime = Date.now();
+        function tick() {
+          const elapsed = Date.now() - startTime;
+          const progress = Math.min(elapsed / FADE_DURATION, 1);
+          // Ease-in curve for natural feel
+          const eased = progress * progress * (3 - 2 * progress);
+          bgMusic.volume = eased * TARGET_VOLUME;
+          if (progress < 1) requestAnimationFrame(tick);
+        }
+        requestAnimationFrame(tick);
+      }).catch(() => musicToggle.classList.add('visible'));
+    }
+
+    function enterMain() {
+      mainScreen.classList.remove('hidden');
+      petalsEl.classList.add('visible');
+      fadeInAudio();
+      startTyping();
+    }
+
+    musicToggle.addEventListener('click', () => {
+      if (bgMusic.paused) {
+        bgMusic.volume = TARGET_VOLUME;
+        bgMusic.play();
+        musicToggle.classList.add('playing');
+        musicToggle.textContent = '🎵';
+      } else {
+        bgMusic.pause();
+        musicToggle.classList.remove('playing');
+        musicToggle.textContent = '🔇';
+      }
+    });
+
+    /* ════════════════════════════════
+       JS TYPEWRITER
+    ════════════════════════════════ */
+    const line1El   = document.getElementById('line1');
+    const line2El   = document.getElementById('line2');
+    const taglineEl = document.getElementById('tagline');
+    const glowBtn   = document.getElementById('glow-btn');
+
+    const TEXT1      = '10 مايو: أنا بدأت الحكاية...';
+    const TEXT2      = '11 مايو: إنتي كملتيها';
+    const CHAR_DELAY = 95;
+
+    function typeText(el, text, onDone) {
+      el.textContent = '';
+      el.classList.add('typing-cursor');
+      const chars = Array.from(text);
+      let i = 0;
+
+      function tick() {
+        if (i < chars.length) {
+          el.textContent += chars[i];
+          i++;
+          setTimeout(tick, CHAR_DELAY);
+        } else {
+          el.classList.remove('typing-cursor');
+          if (typeof onDone === 'function') onDone();
+        }
+      }
+      tick();
+    }
+
+    function startTyping() {
+      setTimeout(() => {
+        typeText(line1El, TEXT1, () => {
+          setTimeout(() => {
+            typeText(line2El, TEXT2, () => {
+              line2El.classList.add('typing-cursor');
+              setTimeout(() => {
+                taglineEl.classList.add('visible');
+                setTimeout(() => glowBtn.classList.add('visible'), 700);
+              }, 600);
+            });
+          }, 480);
+        });
+      }, 750);
+    }
+
+    /* ════════════════════════════════
+       BUTTON CLICK → REVEAL MESSAGE
+    ════════════════════════════════ */
+    glowBtn.addEventListener('click', () => {
+      const msgBox = document.getElementById('msg-box');
+      glowBtn.style.display = 'none';
+      msgBox.style.display  = 'block';
+      void msgBox.offsetWidth;
+      msgBox.classList.add('anim');
+      spawnPetals(10);
+      petalsEl.style.opacity = '1';
+      petalsEl.style.transition = 'opacity 2s ease';
+    });
+  </script>
+</body>
+</html>
